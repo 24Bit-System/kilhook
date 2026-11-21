@@ -38,10 +38,8 @@
   function keydown(event) {
     if (!(event.ctrlKey || event.metaKey) || event.key.toLowerCase() !== 's') return;
     // The Editor stays mounted behind the palette and the typed-confirmation
-    // boxes. Ctrl+S there must not silently save the request underneath.
-    const target = event.target;
-    const tag = (target?.tagName ?? '').toLowerCase();
-    if (tag === 'input' || tag === 'textarea' || tag === 'select' || target?.isContentEditable) return;
+    // boxes. `busy` includes those modals, so Ctrl+S there does nothing while
+    // it still works from any field inside the editor itself.
     event.preventDefault();
     if (!busy) save();
   }

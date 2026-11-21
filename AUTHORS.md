@@ -1,16 +1,13 @@
-# Authors and maintainers
+# Authors
 
-kilhook is designed, built and maintained by **24Bit System**, the product name
-of **Two Four Bit Systech India Private Limited**.
+kilhook is built by **24Bit System**, the trading name of **Two Four Bit Systech
+India Private Limited** (India).
 
-- Company: 24Bit System
-- Legal entity: Two Four Bit Systech India Private Limited
 - Website: https://www.24bitsystem.com
 - Contact: info@24bitsystem.com
 
-The project is published under the MIT License; see [LICENSE](LICENSE). The
-copyright holder is the legal entity above.
+The MIT copyright in [LICENSE](LICENSE) is held by Two Four Bit Systech India
+Private Limited.
 
-Individual contributors are credited here as they join. The original team roles
-(tech lead, core developers, UI developer and security reviewer) are recorded in
-`project.md` §9.
+`project.md` §9 records the original team roles. If you contribute a change that
+ships, add your name or handle below.

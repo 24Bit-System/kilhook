@@ -113,22 +113,21 @@ hash.
 
 ## Who made this
 
-kilhook is built and maintained by **24Bit System**, the product name of
-**Two Four Bit Systech India Private Limited**.
-
-- Website: [www.24bitsystem.com](https://www.24bitsystem.com)
-- Contact: [info@24bitsystem.com](mailto:info@24bitsystem.com)
-- Contributors: [AUTHORS.md](AUTHORS.md)
+kilhook is built by **24Bit System**, the trading name of **Two Four Bit Systech
+India Private Limited**. Reach us at
+[info@24bitsystem.com](mailto:info@24bitsystem.com) or
+[www.24bitsystem.com](https://www.24bitsystem.com). Contributors are listed in
+[AUTHORS.md](AUTHORS.md).
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the build/test workflow and
-[SECURITY.md](SECURITY.md) for reporting vulnerabilities.
+[CONTRIBUTING.md](CONTRIBUTING.md) has the build and test workflow.
+[SECURITY.md](SECURITY.md) explains where to send vulnerability reports.
 
 ## License
 
-MIT — copyright (c) 2026 Two Four Bit Systech India Private Limited; see
-[LICENSE](LICENSE). Brand assets (`logo.png`, `fevicon.png` and the
-banners/screenshots under `docs/`) are covered by the same license. Bundled
-third-party notices: `cmd/kh-app/frontend/vendor/deepmerge/license.txt` and
+MIT. Copyright (c) 2026 Two Four Bit Systech India Private Limited; see
+[LICENSE](LICENSE). The logo, favicon and screenshots under `docs/` use the same
+license. Bundled third-party notices:
+`cmd/kh-app/frontend/vendor/deepmerge/license.txt` and
 `cmd/kh-app/frontend/Inter Font License.txt`.

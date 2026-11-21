@@ -1,20 +1,18 @@
 ---
 name: Feature request
-about: Suggest a capability (check the v1 scope first)
+about: Suggest a capability, after checking the v1 scope list
 title: ''
 labels: enhancement
 assignees: ''
 ---
 
 ## Problem
-What are you trying to do that kilhook cannot do today?
+What can't kilhook do today that you need?
 
 ## Proposed change
 
-## Scope check
-kilhook v1 has a deliberately narrow scope, recorded in `project.md` §4.
-If your request is already listed under "Explicitly Out of V1", explain why the
-scope cut should be revisited (format changes need `format: 2`).
+## Scope
+`project.md` §4 lists what v1 deliberately leaves out. If your idea is in §4.2,
+say why the cut should be revisited.
 
-## Alternatives
-What do you use today instead?
+## What you use now

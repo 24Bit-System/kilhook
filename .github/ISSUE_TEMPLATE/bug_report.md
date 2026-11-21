@@ -1,31 +1,28 @@
 ---
 name: Bug report
-about: Report something that does not work as documented
+about: Something does not work as documented
 title: ''
 labels: bug
 assignees: ''
 ---
 
-## What happened
+## What broke
 
 ## What you expected
 
-## Steps to reproduce
+## How to reproduce
 1.
 2.
 3.
 
-## Reproducer
-If possible, attach the `.kh` file and the OpenAPI spec (redact any credentials
-first — see the redaction rules in `internal/engine/redact.go`). A minimal file
-that reproduces the problem is worth more than a description.
+## Files
+Attach the `.kh` file and spec if you can. Remove real tokens first; the
+redactor in `internal/engine/redact.go` protects report fields, not files you
+attach to an issue.
 
 ## Environment
-- kilhook version (shown in the title bar / report footer):
+- kilhook version (title bar or report footer):
 - Windows version:
-- Go version (if built from source):
-- Frontend bundle built from current sources (run `pwsh -File scripts/verify.ps1`):
 
-## Output
-Paste the terminal report or attach the exported HTML. `pwsh -File scripts/verify.ps1`
-must be green before a bug is triaged as a code defect.
+## Before opening this
+Run `pwsh -File scripts/verify.ps1`. If it fails, paste the output.

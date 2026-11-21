@@ -1,48 +1,47 @@
 # Security policy
 
-kilhook runs entirely on your machine. It sends only the HTTP requests you
-author, collects no telemetry, and has no server. Its security surface is
-therefore mostly local: parsing untrusted `.kh` files, specs and responses,
-confining file writes to a workspace, and keeping fuzzing from becoming an
-attack against a host you did not intend to test.
+kilhook sends the HTTP requests you write and fuzzes them. There is no server,
+no account and no telemetry. The parts worth attacking are the local paths the
+app trusts and the report files it writes.
 
-## Reporting a vulnerability
+## Reporting
 
-Report vulnerabilities privately to **[info@24bitsystem.com](mailto:info@24bitsystem.com)**,
-or use GitHub's private advisory form at
+Email **info@24bitsystem.com**, or use the private advisory form at
 [github.com/24Bit-System/kilhook/security/advisories/new](https://github.com/24Bit-System/kilhook/security/advisories/new).
-Do **not** open a public issue for an unfixed vulnerability. kilhook is
-maintained by 24Bit System — see [www.24bitsystem.com](https://www.24bitsystem.com).
+Please do not open a public issue for something that is not fixed yet.
 
-Include: affected version, a minimal reproducer (a `.kh` file and/or spec),
-the impact you believe it has, and whether you have already told anyone else.
+Include the kilhook version, a `.kh` file or spec that reproduces the problem,
+and what you expected to happen instead. Redact any real credentials from the
+files you send.
 
-Please allow time for a fix before disclosing publicly. We will acknowledge the
-report, confirm or reject it with reasoning, and coordinate a release.
+You will get a reply saying whether we can reproduce it. If we decide it is not
+a defect, we will tell you why.
 
 ## In scope
 
-- Workspace escape: a path from a shared `.kh` file (spec source, baseline,
-  wordlist) resolving outside the registered workspace, including via
-  symlinks/junctions.
-- Loopback-guard or redirect-guard bypass that lets a fuzz request reach a
-  non-local host without `--allow-nonlocal` / typed UI confirmation.
-- Credential leakage into reports or exported HTML.
-- Unbounded reads/allocations from hostile files (oversized `.kh`, spec,
-  response, wordlist, baseline) that exhaust memory or hang the app.
-- Dependency vulnerabilities; the verify gate runs `govulncheck` and pins
-  kin-openapi >= v0.148.0.
-- Prototype-pollution in the vendored frontend `deepmerge` patch.
+- A shared `.kh` file making kilhook write outside the workspace. `spec.baseline`,
+  `fuzz.wordlist` and environment paths pass through `withinDir` and
+  `engine.WithinDir` in `internal/engine/engine.go` for this reason.
+- The loopback guard in `internal/fuzz/runner.go` or the redirect check in
+  `internal/http/client.go` letting fuzz traffic reach a non-loopback host
+  without `--allow-nonlocal` or the typed confirmation in the window.
+- Credentials appearing in a report or exported HTML, including JSON and text
+  diffs and fuzz evidence. The single place to fix that is
+  `internal/engine/redact.go`.
+- A hostile spec, response, wordlist or baseline getting past the size caps
+  (4 MiB `.kh`, 8 MiB spec, 10 MiB response, 5 MiB wordlist).
+- Removal or reversion of the patched `deepmerge` under
+  `cmd/kh-app/frontend/vendor/deepmerge`.
 
 ## Out of scope
 
-- Fuzzing a system you are not authorised to test. The safety guard is a
-  speed bump for accidents, not an authorisation mechanism.
-- Vulnerabilities in the target API you point kilhook at.
-- Findings that require the user to intentionally disable a safety feature
-  (`--allow-nonlocal`, `--insecure`, `--update-baseline`).
+- Testing an API you do not own or have permission to test. The loopback guard
+  catches accidents; it is not an authorisation system.
+- Bugs in the target API you point kilhook at.
+- Anything that needs you to deliberately pass `--allow-nonlocal`, `--insecure`
+  or `--update-baseline`.
 
 ## Supported versions
 
-Security fixes target the latest published release. The current version is
-stamped in `internal/report/model.go` and the Windows build metadata.
+Fixes go into `main` and the next published version. The version string lives in
+`internal/report/model.go` and the Windows build metadata.

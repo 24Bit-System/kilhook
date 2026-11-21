@@ -1,6 +1,8 @@
 Project Kilhook — Master Plan
 Version: 1.20 (verified) · Status: Phases 0–4 complete; Phase 5 ship pending (signing/submission excluded by the owner) — every engine package gated at 80% · Stack: Go 1.26 + Wails v3.1.0 · Target: Windows-first v1
 
+Changelog v1.23: The owner declined an external security review, so a full internal, AI-assisted application security pass was run instead and recorded in `docs/security-review.md` (dated 2026-11-21). It covers the whole app, not only the fuzzer: text baseline diffs, NDJSON/malformed/multipart bodies, fuzz evidence and spec violations now all redact credentials; the unsafe-method typed confirmation can no longer be bypassed by saving a method change; case-variant header targets actually reach the wire; and rate-limit floors, workspace confinement, symlink listing and environment-file reads are enforced. Two hardening fixes landed with it: `LoadEnvironment` is capped at 1 MiB, and `Discover` refuses a symlink/junction that resolves outside the workspace. Checks run: govulncheck (clean), `go mod verify` (clean), `npm audit` (0 vulnerabilities), a tracked-content secret scan (clean), and a fresh-clone `npm ci` / build / verify. The status is a pass with residual risks, not an independent sign-off.
+
 Changelog v1.22: Deep pre-open-source review closed 32 findings. Seven high-severity items: text baseline diffs and fuzz/spec report fields are now redacted; `redactBody` handles NDJSON, malformed forms and multipart without failing open; case-variant header fuzz targets now mutate the existing header key (previously a silent no-op); body fuzzing preserves large JSON integers with `UseNumber`; `pickStatusKey` prefers a lowercase `2xx` over `default`; and the desktop app refreshes `selected` after a save so a changed method cannot bypass the typed unsafe-method confirmation. Also fixed: Save & Run no longer runs after a failed save, stale report/HTML clearing, one-shot `updateBaseline`, rate-limit minimum in CLI/runner and limiter overflow, `$ref` sibling keywords, wildcard violation status, `//` path preservation, typed-injection trailing garbage, strict JSON trailing-data detection, 2xx-only reflection, deterministic media-type pick, complete content-hash inputs with CRLF normalisation, case-sensitive workspace root check, safe temp-file HTML write, Ctrl+S modal guard, clipboard cleanup, block-scalar `---` parsing, CRLF previews, non-ASCII slug hashing, bounded `Discover` reads, preserved file permissions, and four stale docs claims. Regression tests added across format/engine/fuzz/spec/diff and the frontend helpers.
 
 Changelog v1.21: Open-source readiness hardening. Four review findings are closed: the Wails bridge now shares the engine's symlink-resolving workspace confinement (`engine.WithinDir`), so a junction or symlink inside a workspace cannot escape it; cancellation seen by fuzz workers after the producer finishes queueing now marks the run aborted instead of reporting the skips as `max_requests`; the non-localhost guard now skips only the fuzz pass, with a warning and an incomplete (exit 2) verdict, so the baseline, contract and diff report survives; and the configured per-host concurrency now reaches the cached HTTP transport's connection pool. Regression tests cover each path. Open-source readiness followed: MIT license, CONTRIBUTING/SECURITY/CODE_OF_CONDUCT/CHANGELOG, an expanded `.gitignore`, corrected stale docs and layout, `npm ci`/Go-toolchain guidance, de-staled MSIX branding strings, and a content-hash frontend check that cannot fail on a fresh clone. Open-source attribution now names the maker: 24Bit System / Two Four Bit Systech India Private Limited, with the MIT copyright, AUTHORS.md, README credits, and a real security contact (info@24bitsystem.com). The no-git/no-CI workflow and the waived independent security sign-off are unchanged.
@@ -700,11 +702,12 @@ Total: 16 weeks.
 
 9. Team & Roles
 
-kilhook is designed, built and maintained by **24Bit System**, the product name
-of **Two Four Bit Systech India Private Limited** (www.24bitsystem.com,
-info@24bitsystem.com). The roles below describe the original team; named
-contributors are credited in `AUTHORS.md`. The MIT copyright holder is the legal
-entity above.
+kilhook is designed, built and maintained by **24Bit System**, the brand of
+**Two Four Bit Systech India Private Limited** (www.24bitsystem.com,
+info@24bitsystem.com). kilhook is the product; 24Bit System is the company brand;
+Two Four Bit Systech India Private Limited is the legal entity that holds the
+MIT copyright. The roles below describe the original team; named contributors
+are credited in `AUTHORS.md`.
 
 9.1 Minimum Viable Team
 Role	Count	Allocation	Responsibility
@@ -856,7 +859,7 @@ Supply chain (dependency compromise)	govulncheck + go mod verify in scripts/veri
 MSIX package tampering	Store signing; no sideloading in v1
 User runs Kilhook against unauthorized targets	Out of scope — user responsibility; documented in quickstart
 11.4 Security Advisor Scope (Phase 2 Review)
-Status: waived by the project owner. Replaced with an internal self-review recorded in `docs/security-review.md` and changelog v1.19; it is not an independent sign-off. The review scope below is what was assessed.
+Status: the owner declined an external review. An internal, AI-assisted pass covering the whole application was completed on 2026-11-21 and is recorded in `docs/security-review.md` (changelog v1.23); it is not an independent sign-off. The review scope below is what was assessed.
 
 The advisor reviews:
 

@@ -2,6 +2,7 @@ package http
 
 import (
 	"fmt"
+	"io"
 	"net/url"
 	"os"
 	"sort"
@@ -10,12 +11,25 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+// MaxEnvBytes bounds the environment file read. Env files are small; the cap
+// only exists so a hostile workspace cannot make the app read a huge file when
+// the user selects that environment.
+const MaxEnvBytes = 1 << 20
+
 // LoadEnvironment reads a YAML environment file (a flat map of names to
 // scalar values) into a string map.
 func LoadEnvironment(path string) (map[string]string, error) {
-	data, err := os.ReadFile(path)
+	f, err := os.Open(path)
 	if err != nil {
 		return nil, fmt.Errorf("environment %s: %w", path, err)
+	}
+	defer f.Close()
+	data, err := io.ReadAll(io.LimitReader(f, MaxEnvBytes+1))
+	if err != nil {
+		return nil, fmt.Errorf("environment %s: %w", path, err)
+	}
+	if len(data) > MaxEnvBytes {
+		return nil, fmt.Errorf("environment %s: exceeds the %d byte limit", path, MaxEnvBytes)
 	}
 	var raw map[string]any
 	if err := yaml.Unmarshal(data, &raw); err != nil {

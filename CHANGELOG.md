@@ -20,3 +20,8 @@ Work done before publishing:
 - Added issue and PR templates, and a content-hash check that survives a fresh
   clone.
 - Changed the Go module to `github.com/24Bit-System/kilhook`.
+- Ran an internal security pass over the whole app. Credential redaction now
+  covers text diffs, NDJSON/form/multipart bodies, fuzz evidence and spec
+  violations; env-file reads are capped; `Discover` refuses symlinks that leave
+  the workspace. Details and residual risks are in `docs/security-review.md`.
+  This is not an independent audit.

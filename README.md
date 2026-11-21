@@ -113,7 +113,7 @@ hash.
 
 ## Who made this
 
-kilhook is built by **24Bit System**, the trading name of **Two Four Bit Systech
+kilhook is an app built by **24Bit System**, the brand of **Two Four Bit Systech
 India Private Limited**. Reach us at
 [info@24bitsystem.com](mailto:info@24bitsystem.com) or
 [www.24bitsystem.com](https://www.24bitsystem.com). Contributors are listed in

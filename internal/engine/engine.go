@@ -313,6 +313,14 @@ func Discover(dir string) ([]Workfile, error) {
 		}
 		path := filepath.Join(dir, e.Name())
 		wf := Workfile{Path: path, Name: e.Name()}
+		// Do not read through a symlink or junction that leaves the workspace.
+		// Discover only lists; Open/Run would reject the path anyway, but the
+		// listing should not pull an outside file into memory first.
+		if !withinDir(dir, path) {
+			wf.Error = "file resolves outside the workspace"
+			out = append(out, wf)
+			continue
+		}
 		// Bound the read itself: a size check via e.Info() is a TOCTOU window
 		// if the file grows between the stat and the read.
 		f, err := os.Open(path)

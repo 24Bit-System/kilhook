@@ -25,6 +25,21 @@ spec:
 
 No account, no telemetry, no server, no database. Workspaces are folders.
 
+## Try it
+
+Prebuilt Windows binaries are on the
+[v0.1.0 release](https://github.com/24Bit-System/kilhook/releases/tag/v0.1.0):
+`kh-app.exe` is the desktop window and `kh-cli.exe` is the headless loop. They
+are unsigned, so SmartScreen warns on first run; build from source if you would
+rather not bypass it.
+
+```powershell
+.\kh-cli.exe run testdata\requests\petstore-get.kh --env dev
+```
+
+If you want to test it and report back, `docs/beta-testing.md` has the eight
+steps we care about.
+
 ## Status
 
 | Piece | State |
@@ -75,7 +90,7 @@ screen on a 125%-scaled display.
 ![The desktop window after a run](docs/screens/app.png)
 
 See `docs/quickstart.md`, `docs/kh-format.md`, `docs/fuzzing-guide.md`,
-`docs/desktop-app.md` and `docs/security-review.md`.
+`docs/desktop-app.md`, `docs/beta-testing.md` and `docs/security-review.md`.
 
 ## Verify
 

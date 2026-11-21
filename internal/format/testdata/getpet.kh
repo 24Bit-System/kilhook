@@ -1,0 +1,25 @@
+format: 1
+name: Get Pet
+method: GET
+url: "{{base_url}}/pets/42"
+headers:
+  Accept: application/json
+auth:
+  type: bearer
+  token: "{{token}}"
+query:
+  expand: "true"
+fuzz:
+  targets:
+    - path.1
+    - query.expand
+    - header.Accept
+  methods:
+    - boundary
+  max_requests: 20
+timeout_ms: 5000
+follow_redirects: false
+spec:
+  source: "../specs/petstore.yaml"
+  operation: "/pets/{id} get"
+---

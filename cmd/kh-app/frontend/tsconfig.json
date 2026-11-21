@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
+    "sourceMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    /**
+     * This frontend is JavaScript, not TypeScript. Svelte still checks the
+     * markup (a11y, invalid directives), but checkJs is off because the app's
+     * state is intentionally dynamic; enabling it would report hundreds of
+     * implicit-any errors without adding runtime safety.
+     */
+    "allowJs": true,
+    "checkJs": false,
+    "isolatedModules": true,
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "bindings"],
+}

@@ -1,0 +1,12 @@
+format: 1
+name: Dummyjson product
+method: GET
+url: "https://dummyjson.com/products/1?q=kilhook"
+fuzz:
+  targets:
+    - query.q
+  methods:
+    - type_confusion
+  max_requests: 20
+  rate_limit: 3
+---

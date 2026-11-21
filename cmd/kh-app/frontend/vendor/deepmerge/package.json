@@ -1,0 +1,18 @@
+{
+  "name": "deepmerge",
+  "version": "4.3.2",
+  "description": "A library for deep (recursive) merging of JavaScript objects. Locally patched by Kilhook to block prototype-poisoning keys.",
+  "keywords": ["merge", "deep", "extend", "copy", "clone", "recursive"],
+  "homepage": "https://github.com/TehShrike/deepmerge",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/TehShrike/deepmerge.git"
+  },
+  "main": "dist/cjs.js",
+  "types": "index.d.ts",
+  "files": ["dist", "index.d.ts", "license.txt", "readme.md"],
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "license": "MIT"
+}

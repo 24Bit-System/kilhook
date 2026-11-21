@@ -1,0 +1,22 @@
+format: 1
+name: Get Pet
+method: GET
+url: "{{base_url}}/pets/{{pet_id}}"
+headers:
+  Accept: application/json
+query:
+  expand: "false"
+fuzz:
+  targets:
+    - path.1
+    - query.expand
+    - header.Accept
+  methods:
+    - boundary
+    - injection
+  max_requests: 60
+spec:
+  source: "../specs/petstore.yaml"
+  operation: "/pets/{id} get"
+  baseline: ".kilhook/baselines/petstore-get.json"
+---

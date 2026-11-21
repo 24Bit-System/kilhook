@@ -1,0 +1,12 @@
+format: 1
+name: Httpbin echo
+method: GET
+url: "https://httpbin.org/get?q=kilhook"
+fuzz:
+  targets:
+    - query.q
+  methods:
+    - injection
+  max_requests: 30
+  rate_limit: 3
+---

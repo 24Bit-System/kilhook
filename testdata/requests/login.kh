@@ -1,0 +1,22 @@
+format: 1
+name: Login
+method: POST
+url: '{{base_url}}/auth/login'
+headers:
+  Accept: application/json
+  Content-Type: application/json
+fuzz:
+  targets:
+    - body.email
+    - body.password
+    - header.X-Forwarded-For
+  methods:
+    - injection
+    - type_confusion
+  max_requests: 40
+  rate_limit: 2
+spec:
+  source: ../specs/petstore.yaml
+  operation: /auth/login post
+---
+{"email": "user@example.com", "password": "secret"}

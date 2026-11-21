@@ -1,0 +1,23 @@
+# Build output
+/bin/
+*.exe
+*.msix
+*.appx
+*.dll
+*.test
+*.log
+*.tmp
+coverage.*
+
+# Frontend dependencies (dist/ is intentionally tracked: //go:embed in
+# cmd/kh-app/main.go needs it at compile time, and verify.ps1 checks that it
+# matches the sources via dist/.source-hash).
+cmd/kh-app/frontend/node_modules/
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp

@@ -1,0 +1,101 @@
+# Type-confusion payloads. Every line must be a valid JSON literal, because the
+# resolver injects these as values rather than strings: the point is a field
+# declared as a string receiving a number, a field declared as an object
+# receiving an array, and so on. Anything that does not parse is a test bug, not
+# a fuzz result.
+
+# --- wrong primitive type where a string is expected ---
+null
+true
+false
+0
+1
+-1
+42
+3.14
+-0.0
+1e308
+-1e308
+1e-308
+0.000001
+9223372036854775807
+-9223372036854775808
+2147483648
+4294967296
+
+# --- collections where a scalar is expected ---
+[]
+[null]
+[true]
+[0]
+[""]
+["null"]
+[1,2,3]
+["a","b"]
+[[1]]
+[[[1]]]
+[[]]
+{}
+{"a":null}
+{"a":1}
+{"a":""}
+{"a":[]}
+{"a":{}}
+{"$ne":null}
+{"$ne":""}
+{"$gt":""}
+{"$where":"1==1"}
+{"$regex":".*"}
+{"$exists":true}
+{"__proto__":null}
+{"__proto__":{"x":1}}
+{"constructor":{"prototype":{"x":1}}}
+{"@type":"x"}
+{"$ref":"#/x"}
+{"toString":"x"}
+{"valueOf":"x"}
+{"length":0}
+{"0":"a","1":"b"}
+
+# --- numbers with shapes parsers disagree about ---
+1.0
+1.0000000000000002
+0.1
+0.2
+0.30000000000000004
+1e0
+1E0
+1e-0
+0e0
+-0
+-0.5
+100000000000000000000
+0.0000000000000000001
+
+# --- strings that look like other types ---
+"null"
+"true"
+"false"
+"0"
+"-1"
+"1e309"
+"NaN"
+"Infinity"
+"1970-01-01"
+"0001-01-01T00:00:00Z"
+"[]"
+"{}"
+"{\"a\":1}"
+"<script>alert(1)</script>"
+"'\u0000'"
+"\u0000"
+"\uffff"
+"../../etc/passwd"
+"$ne"
+
+# --- structure depth and width ---
+[[[[[[[[[[null]]]]]]]]]]
+[null,null,null,null,null,null,null,null]
+{"a":{"b":{"c":{"d":{"e":null}}}}}
+{"a":[{"b":[]}]}
+<longjson>

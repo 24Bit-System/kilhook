@@ -1,0 +1,17 @@
+format: 1
+name: Pet lookup
+method: GET
+url: "https://petstore3.swagger.io/api/v3/pet/10"
+headers:
+  Accept: application/json
+spec:
+  source: specs/petstore.json
+  operation: /pet/{petId} get
+fuzz:
+  targets:
+    - path.3
+  methods:
+    - boundary
+  max_requests: 20
+  rate_limit: 3
+---

@@ -1,0 +1,12 @@
+format: 1
+name: Jsonplaceholder post
+method: GET
+url: "https://jsonplaceholder.typicode.com/posts/1"
+fuzz:
+  targets:
+    - header.X-Forwarded-For
+  methods:
+    - boundary
+  max_requests: 20
+  rate_limit: 3
+---

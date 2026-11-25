@@ -1,7 +1,6 @@
 # Changelog
 
-The full history, including the phase-by-phase entries, is at the top of
-[project.md](project.md).
+The full history is in the git log.
 
 ## v0.1.0 — first public source release
 

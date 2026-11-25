@@ -76,7 +76,6 @@ Private reports only; see [SECURITY.md](SECURITY.md).
 
 ## Changelog
 
-`project.md` carries the full history. Add a line there for anything a user
-would notice. Keep the version in `internal/report/model.go`,
-`cmd/kh-app/build/config.yml`, `cmd/kh-app/build/windows/info.json` and the
-MSIX manifests in step.
+Add a line to `CHANGELOG.md` for anything a user would notice. Keep the version
+in `internal/report/model.go`, `cmd/kh-app/build/config.yml`,
+`cmd/kh-app/build/windows/info.json` and the MSIX manifests in step.

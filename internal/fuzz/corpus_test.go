@@ -1,11 +1,10 @@
 package fuzz
 
-// The false-positive corpus. project.md §10.4 and the pre-submission checklist
-// both require a measured false-positive rate rather than an assertion, so this
-// file stands up four local APIs with known answers and reports true/false
-// positives and recall per target. Precision is only meaningful when a fixture
-// actually produces findings; the clean fixture is a zero-false-positive gate,
-// not a 100%-precision measurement.
+// The false-positive corpus. A measured false-positive rate is worth more than
+// an assertion, so this file stands up four local APIs with known answers and
+// reports true/false positives and recall per target. Precision is only
+// meaningful when a fixture actually produces findings; the clean fixture is a
+// zero-false-positive gate, not a 100%-precision measurement.
 //
 //	clean       a well-behaved API that never echoes and never 500s   expect 0 findings
 //	sql-unsafe  returns a SQL error page for quote payloads           expect status + error_string

@@ -20,7 +20,7 @@ import (
 )
 
 // MaxResponseBytes bounds how much of a response body is read. A malicious or
-// broken server must not be able to exhaust memory (project.md §11.3).
+// broken server must not be able to exhaust memory.
 const MaxResponseBytes = 10 << 20 // 10 MiB
 
 // Request is a fully resolved request, ready to send.

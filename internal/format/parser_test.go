@@ -95,8 +95,8 @@ auth:
 }
 
 // TestMultipartBodyTargetsWarnAndSkip is the contract between the format and
-// the fuzzer (project.md §5.5): declaring body.* targets on a multipart body is
-// a warning plus a nil target set, never an error and never a silent no-op.
+// the fuzzer: declaring body.* targets on a multipart body is a warning plus a
+// nil target set, never an error and never a silent no-op.
 func TestMultipartBodyTargetsWarnAndSkip(t *testing.T) {
 	src := `format: 1
 name: Upload

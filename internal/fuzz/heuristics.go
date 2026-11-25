@@ -44,8 +44,7 @@ type Finding struct {
 }
 
 // Detector holds the tuned heuristics. Timing is advisory and disabled by
-// default: on the internal corpus it is the largest source of false positives
-// (project.md §4.1, §10.2).
+// default: on the internal corpus it is the largest source of false positives.
 type Detector struct {
 	ErrorPatterns    []*regexp.Regexp
 	ReflectionOn     bool

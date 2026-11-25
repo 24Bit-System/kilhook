@@ -2,9 +2,8 @@
 #
 # Runs the full loop (send -> validate -> fuzz -> diff -> report -> HTML export)
 # against three real, read-only services plus the Swagger Petstore with its real
-# OpenAPI document. This is the "full loop smoke test on 3 public APIs" item from
-# project.md's pre-submission checklist, and the only scripted check in the repo
-# that uses the network.
+# OpenAPI document. This is the full-loop smoke test, and the only scripted check
+# in the repo that uses the network.
 #
 #   pwsh -File scripts/smoke.ps1
 #

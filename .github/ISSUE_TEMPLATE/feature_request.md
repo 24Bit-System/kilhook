@@ -12,7 +12,7 @@ What can't kilhook do today that you need?
 ## Proposed change
 
 ## Scope
-`project.md` §4 lists what v1 deliberately leaves out. If your idea is in §4.2,
-say why the cut should be revisited.
+kilhook v1 is deliberately narrow. If your idea goes beyond it, say why it
+should be reconsidered.
 
 ## What you use now

@@ -6,7 +6,7 @@
 - [ ] `pwsh -File scripts/verify.ps1` passes locally
 - [ ] `scripts/smoke.ps1` if HTTP, fuzz, spec or diff code changed
 - [ ] Regression test with the fix
-- [ ] `project.md` changelog entry for anything a user would notice
+- [ ] `CHANGELOG.md` entry for anything a user would notice
 
 There is no CI here. Run the gate before asking for review.
 

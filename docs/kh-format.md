@@ -76,7 +76,7 @@ fuzz:
 - `body.<path>` resolves **only when the body is JSON**. On a multipart or
   form-urlencoded body the parser emits one warning and skips every `body.*`
   target; the run continues with the remaining targets. Multipart and form body
-  fuzzing is out of scope for v1 (`project.md` §4.2, R13).
+  fuzzing is out of scope for v1.
 - `path.N` counts **URL path segments only** — scheme, host, port, the leading
   slash and the query string are not segments, and `{{base_url}}` is resolved
   before indexing. For `/users/{{id}}/posts`, `path.0` = `users`, `path.1` = the

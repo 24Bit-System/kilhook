@@ -25,6 +25,8 @@ spec:
 
 No account, no telemetry, no server, no database. Workspaces are folders.
 
+Use kilhook only on APIs you own or have explicit permission to test.
+
 ## Try it
 
 Prebuilt Windows binaries are on the
@@ -37,8 +39,14 @@ rather not bypass it.
 .\kh-cli.exe run testdata\requests\petstore-get.kh --env dev
 ```
 
+Or build the CLI from source with Go:
+
+```powershell
+go install github.com/24Bit-System/kilhook/cmd/kh-cli@latest
+```
+
 If you want to test it and report back, `docs/beta-testing.md` has the eight
-steps we care about.
+steps we care about. What is planned next is in [ROADMAP.md](ROADMAP.md).
 
 ## Status
 

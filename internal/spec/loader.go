@@ -1,7 +1,6 @@
 // Package spec loads an OpenAPI document and validates responses against the
 // operation's response schema. kin-openapi parses the document; validation is
-// performed by santhosh-tekuri/jsonschema, which owns the response schema rules
-// (project.md §6.1, §6.3 step 6).
+// performed by santhosh-tekuri/jsonschema, which owns the response schema rules.
 package spec
 
 import (

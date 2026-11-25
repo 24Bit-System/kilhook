@@ -1,4 +1,4 @@
-# Local verification gate for kilhook (project.md §10.3).
+# Local verification gate for kilhook.
 #
 # There is no CI service and no version-control host. This script is the gate:
 # a change that cannot leave it green does not land. A skipped run is a failed

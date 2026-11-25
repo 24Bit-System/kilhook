@@ -2194,7 +2194,7 @@ button.chip.on {
    switches (hidden attribute toggles visibility without unmounting). */
 .tab-panel[hidden] { display: none; }
 
-/* Typed confirmation for non-localhost fuzzing (PROJECT.md §...). */
+/* Typed confirmation for non-localhost fuzzing. */
 .confirm-row {
   display: flex;
   gap: 0.4rem;

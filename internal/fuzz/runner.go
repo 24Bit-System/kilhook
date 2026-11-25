@@ -29,7 +29,7 @@ type Mutation struct {
 }
 
 // Config are the run limits. Every knob has a documented default; the runner
-// itself never hard-codes a rate (project.md §6.4, §8 Phase 2).
+// itself never hard-codes a rate.
 type Config struct {
 	RateLimit          float64
 	PerHostConcurrency int
